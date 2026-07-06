@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Dynamic Theme Variables ── */
+  --color-brand-bg:     var(--brand-bg);
+  --color-brand-text:   var(--brand-text);
+  --color-brand-text-secondary: var(--brand-text-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-card:   var(--brand-card);
+  --color-brand-border: var(--brand-border);
+
+  /* Mapping common aliases */
+  --color-brand-ivory:  var(--brand-bg);
+  --color-brand-pine:   var(--brand-text);
+  --color-brand-black:  var(--brand-text);
+  --color-brand-silver: var(--brand-bg);
+  --color-brand-ice:    var(--brand-accent);
+
+  --font-sans: var(--font-cairo), Arial, sans-serif;
+}
+
+:root {
+  /* ── Urban Premium (LIGHT THEME) ── */
+  --brand-bg: #EBEBEB;
+  --brand-text: #1C1C1C;
+  --brand-text-secondary: #6B7280;
+  --brand-accent: #BCD4E6;   /* Ice Blue Accent in Light Mode too */
+  --brand-card: #FAFAFA;     /* High contrast clean white */
+  --brand-border: rgba(28, 28, 28, 0.08);
+}
+
+.dark {
+  /* ── Industrial Icy (DARK REFINED) ── */
+  --brand-bg: #050505;
+  --brand-text: #EBEBEB;
+  --brand-text-secondary: #9BA3AF;
+  --brand-accent: #BCD4E6;
+  --brand-card: #0D0D0D;
+  --brand-border: #1A1A1A;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--brand-bg);
+    color: var(--brand-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+}
+
+/* ── Neon / Glow Utilities (Theme Aware) ── */
+@utility text-glow-neon {
+  text-shadow: 0 0 20px rgba(188, 212, 230, 0.15);
+}
+
+@utility aura-glow {
+  filter: drop-shadow(0 0 10px rgba(188, 212, 230, 0.15));
+}
+
+@utility neon-white-halo {
+  box-shadow: 0 0 20px rgba(188, 212, 230, 0.15);
+  transition: all 0.3s ease;
+}
+
+.dark .neon-white-halo {
+  box-shadow: 0 0 25px rgba(188, 212, 230, 0.25);
+}
+
+/* ── Glass card (Theme Aware) ── */
+@utility glass-card {
+  background: var(--brand-card);
+  opacity: 0.8;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--brand-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-card {
+  background: rgba(13, 13, 13, 0.8);
+  border-color: var(--brand-border);
+}
+
+/* ── Melt gradient button ── */
+@utility btn-melt {
+  background: var(--brand-card);
+  color: var(--brand-text);
+  box-shadow: 0 0 20px rgba(188, 212, 230, 0.15);
+  border: 1px solid var(--brand-border);
+  transition: all 0.4s ease;
+  &:hover {
+    background: linear-gradient(135deg, #EBEBEB 0%, #BCD4E6 100%);
+    color: #050505;
+    box-shadow: 0 0 35px rgba(188, 212, 230, 0.4);
+    border-color: transparent;
+    transform: translateY(-2px);
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
