@@ -13,6 +13,7 @@ type Order = {
   address: string;
   alt_phone?: string;
   total: number;
+  total_amount?: number;
   status: string;
   items: OrderItem[];
   created_at: string;

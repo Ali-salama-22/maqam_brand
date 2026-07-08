@@ -20,6 +20,7 @@ type Order = {
   alt_phone?: string;
   address: string;
   total: number;
+  total_amount?: number;
   status: string;
   items: OrderItem[];
   created_at: string;
