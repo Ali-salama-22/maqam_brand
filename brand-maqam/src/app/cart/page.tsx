@@ -222,15 +222,13 @@ ${itemLines}
         altPhone: formattedAlt || ""
       };
 
-      // Save result for invoice
-      setOrderResult({ orderId, items: [...items], total, data: updatedData });
+      // Clear cart
+      clearCart();
 
-      // WhatsApp redirect
+      // WhatsApp redirect (direct navigation to avoid mobile pop-up blockers)
       const waNumber = "201032904142";
       const message = buildWhatsAppMessage(orderId, updatedData);
-      window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, "_blank");
-
-      clearCart();
+      window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     } catch (err: any) {
       alert("حدث خطأ: " + (err?.message || "خطأ غير معروف"));
     } finally {
