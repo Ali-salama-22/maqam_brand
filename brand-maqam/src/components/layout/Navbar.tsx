@@ -90,16 +90,7 @@ export default function Navbar() {
 
 
 
-  const hoverIn = (e: React.MouseEvent<HTMLElement>) => {
-    const el = e.currentTarget;
-    el.style.boxShadow = "0 0 15px 5px rgba(255, 255, 255, 0.8), 0 0 30px 10px var(--brand-accent)";
-    el.style.transform = "scale(1.1) translateY(-2px)";
-  };
-  const hoverOut = (e: React.MouseEvent<HTMLElement>) => {
-    const el = e.currentTarget;
-    el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.04)";
-    el.style.transform = "scale(1) translateY(0)";
-  };
+  const btnClass = "bg-brand-card border border-brand-border shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-brand-accent p-2 sm:p-3.5 rounded-full transition-all duration-300 flex items-center justify-center hover:scale-105 active:scale-95 hover:shadow-[0_0_15px_rgba(188,212,230,0.4)] hover:-translate-y-0.5 shrink-0";
 
   return (
     <>
@@ -111,59 +102,54 @@ export default function Navbar() {
           borderBottom: "1px solid var(--brand-border)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full flex justify-between items-center gap-2">
 
           {/* Left Side: Cart, Theme & Profile */}
-          <div className="flex items-center gap-2 sm:gap-5">
-            <div className="flex items-center gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
               <button 
                 onClick={toggleTheme} 
-                style={iconBtn} 
-                onMouseEnter={hoverIn} 
-                onMouseLeave={hoverOut}
+                className={btnClass}
               >
                 {theme === "light" ? <Moon size={18} className="sm:w-6 sm:h-6" /> : <Sun size={18} className="sm:w-6 sm:h-6" />}
               </button>
               
-              <button onClick={() => setShowCart(true)} style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut} className="relative">
-                <SketchyCart className="w-6 h-6 sm:w-8 sm:h-8" />
+              <button onClick={() => setShowCart(true)} className={`${btnClass} relative`}>
+                <SketchyCart className="w-5 h-5 sm:w-7 sm:h-7" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 text-white text-[10px] w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-black shadow"
+                  <span className="absolute -top-1 -right-1 text-white text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-black shadow"
                     style={{ background: "var(--brand-accent)" }}>
                     {cartCount}
                   </span>
                 )}
               </button>
             </div>
-            <div className="flex items-center gap-1.5 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-3">
               {isAdmin && (
-                <Link href="/admin" style={{ ...iconBtn, color: "#B0C4DE" }} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-                  <LayoutDashboard size={20} className="sm:w-8 sm:h-8" />
+                <Link href="/admin" className={btnClass} style={{ color: "#B0C4DE" }}>
+                  <LayoutDashboard size={18} className="sm:w-7 sm:h-7" />
                 </Link>
               )}
               <div className="relative">
-                <Link href="/profile" style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-                  <SketchyUser className="w-6 h-6 sm:w-8 sm:h-8" />
+                <Link href="/profile" className={btnClass}>
+                  <SketchyUser className="w-5 h-5 sm:w-7 sm:h-7" />
                 </Link>
               </div>
             </div>
           </div>
 
           {/* Center: Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 mx-auto sm:mx-0">
             <Link href="/">
               <MaqamLogo className="hover:scale-105 transition-transform duration-500" />
             </Link>
           </div>
 
           {/* Right Side: Shipping & Social */}
-          <div className="flex items-center gap-1.5 sm:gap-5">
-            <button onClick={() => setShowOrderModal(true)} style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-              <SketchyTruck className="w-6 h-6 sm:w-8 sm:h-8" />
+          <div className="flex items-center gap-1.5 sm:gap-4 justify-end">
+            <button onClick={() => setShowOrderModal(true)} className={btnClass}>
+              <SketchyTruck className="w-5 h-5 sm:w-7 sm:h-7" />
             </button>
-            <Link href="https://wa.me/201032904142" target="_blank" style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-              <SketchyGroup className="w-6 h-6 sm:w-8 sm:h-8" />
-            </Link>
           </div>
         </div>
       </nav>

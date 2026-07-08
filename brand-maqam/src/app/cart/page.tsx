@@ -298,8 +298,8 @@ ${itemLines}
                       <PackageOpen size={40} className="text-brand-text/10" />
                     )}
                   </div>
-                  <div className="flex-grow flex flex-row justify-between items-center sm:px-4">
-                    <div className="space-y-1.5 sm:space-y-2">
+                  <div className="flex-grow flex flex-col sm:flex-row justify-between sm:items-center w-full gap-4 sm:px-4">
+                    <div className="space-y-1.5 sm:space-y-2 w-full">
                       <h3 className="font-black text-brand-text text-lg sm:text-2xl uppercase italic tracking-tighter leading-none">{item.name}</h3>
                       <div className="flex items-center gap-2 sm:gap-4 text-[10px] font-black text-brand-text/30 uppercase tracking-[0.2em]">
                         <span className="bg-brand-bg px-2 sm:px-3 py-1 rounded-full border border-brand-border">المقاس: {item.size}</span>
@@ -311,7 +311,7 @@ ${itemLines}
                         <button onClick={() => updateQty(item.cartId, item.qty + 1)} className="font-black text-brand-text/40 hover:text-brand-text transition-colors">+</button>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end justify-between gap-3 sm:gap-4 ml-2">
+                    <div className="flex sm:flex-col flex-row items-center sm:items-end justify-between w-full sm:w-auto border-t sm:border-t-0 border-brand-border/20 pt-3 sm:pt-0 gap-3">
                       <span className="text-xl sm:text-3xl font-black text-brand-text">
                         {item.price * item.qty} <span className="text-xs opacity-40 uppercase tracking-tighter">ج.م</span>
                       </span>
