@@ -273,10 +273,10 @@ DECLARE
   current_stock int;
 BEGIN
   INSERT INTO public.orders (
-    user_id, customer_name, phone, address, alt_phone, total, status, items
+    user_id, customer_name, phone, address, alt_phone, total, total_amount, status, items
   ) VALUES (
     p_user_id, p_customer_name, p_customer_phone, p_customer_address,
-    p_alt_phone, p_total_amount, 'قيد المراجعة', p_items
+    p_alt_phone, p_total_amount, p_total_amount, 'قيد المراجعة', p_items
   ) RETURNING id INTO new_order_id;
 
   FOR item IN SELECT * FROM jsonb_array_elements(p_items) LOOP

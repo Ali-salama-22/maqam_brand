@@ -25,6 +25,7 @@ BEGIN
     address,
     alt_phone,
     total,
+    total_amount,
     status,
     items
   ) VALUES (
@@ -33,6 +34,7 @@ BEGIN
     p_customer_phone,
     p_customer_address,
     p_alt_phone,
+    p_total_amount,
     p_total_amount,
     'قيد المراجعة',
     p_items

@@ -58,6 +58,9 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
     if (!selectedSize) return alert("يرجى اختيار المقاس");
     if (product.colors?.length > 0 && !selectedColor) return alert("يرجى اختيار اللون");
     
+    const activeVariant = product.variants?.find((v: any) => v.hex === selectedColor);
+    const selectedColorName = activeVariant?.name || selectedColor;
+
     addToCart({
       cartId: `${product.id}-${selectedSize}-${selectedColor}`,
       id: product.id,
@@ -66,6 +69,7 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
       image_url: currentImage, // Use variant image
       size: selectedSize,
       color: selectedColor, // Include selected color
+      colorName: selectedColorName,
       qty: 1
     });
 
@@ -169,7 +173,11 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
           {/* Color Selector */}
           {product.colors && product.colors.length > 0 && (
             <div className="mb-12">
-              <label className="block text-[10px] font-black text-brand-text/40 uppercase tracking-[0.3em] mb-6">اللون المختار</label>
+              <label className="block text-[10px] font-black text-brand-text/40 uppercase tracking-[0.3em] mb-6">
+                اللون المختار: <span className="text-brand-accent text-xs font-black mr-2 bg-brand-accent/10 px-3.5 py-1 rounded-full border border-brand-accent/10">
+                  {selectedColor ? (product.variants?.find((v: any) => v.hex === selectedColor)?.name || selectedColor) : "الرجاء الاختيار"}
+                </span>
+              </label>
               <div className="flex gap-4">
                 {product.colors.map((hex: string) => (
                   <button

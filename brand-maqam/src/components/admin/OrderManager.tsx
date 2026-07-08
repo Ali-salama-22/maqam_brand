@@ -81,7 +81,7 @@ export default function OrderManager() {
   // Financials Calculation
   const totalRevenue = orders
     .filter(o => o.status === "تم الاستلام")
-    .reduce((sum, o) => sum + Number(o.total), 0);
+    .reduce((sum, o) => sum + Number(o.total ?? o.total_amount), 0);
 
   // Loyalty calculation (Grouping by phone number to find VIPs)
   const phoneCounts = orders.reduce((acc, obj) => {
@@ -282,7 +282,7 @@ export default function OrderManager() {
               </div>
               <div className="flex justify-between items-center pt-4 border-t-2 border-brand-text">
                 <span className="font-black text-xl text-brand-text uppercase">الإجمالي</span>
-                <span className="font-black text-3xl text-brand-accent italic">{order.total} ج.م</span>
+                <span className="font-black text-3xl text-brand-accent italic">{order.total ?? order.total_amount} ج.م</span>
               </div>
             </div>
           </div>
@@ -336,7 +336,7 @@ export default function OrderManager() {
                   </td>
                   <td className="px-8 py-8 align-top border-y border-brand-border">
                     <div className="text-2xl font-black text-brand-text italic tracking-tighter leading-none">
-                      {order.total} <span className="text-[10px] opacity-20 uppercase tracking-widest not-italic">j.m</span>
+                      {order.total ?? order.total_amount} <span className="text-[10px] opacity-20 uppercase tracking-widest not-italic">j.m</span>
                     </div>
                   </td>
                   <td className="px-8 py-8 align-top last:rounded-l-[2.5rem] border-y border-l border-brand-border text-left">

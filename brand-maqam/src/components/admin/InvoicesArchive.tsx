@@ -104,7 +104,7 @@ function InvoicePrintModal({ order, onClose }: { order: Order; onClose: () => vo
         {/* Total */}
         <div className="flex justify-between items-center pt-4 border-t-4 border-black">
           <span className="font-black text-xl uppercase tracking-tighter">الإجمالي النهائي</span>
-          <span className="font-black text-3xl italic">{order.total} <span className="text-sm">ج.م</span></span>
+          <span className="font-black text-3xl italic">{order.total ?? order.total_amount} <span className="text-sm">ج.م</span></span>
         </div>
 
         {/* Store Closing */}
@@ -289,7 +289,7 @@ export default function InvoicesArchive() {
                 {/* Total + CTA */}
                 <div className="mt-4 pt-4 border-t border-brand-border flex justify-between items-center relative z-10">
                   <span className="text-2xl font-black text-brand-text italic">
-                    {order.total}
+                    {order.total ?? order.total_amount}
                     <span className="text-[10px] opacity-40 ml-1">ج.م</span>
                   </span>
                   <div className="flex items-center gap-2 text-brand-accent opacity-0 group-hover:opacity-100 transition-all">

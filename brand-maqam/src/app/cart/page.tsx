@@ -153,15 +153,12 @@ export default function CartPage() {
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
   const formatPhone = (raw: string) => {
-    const cleaned = raw.trim().replace(/\D/g, "");
-    if (cleaned.startsWith("20")) return `+${cleaned}`;
-    if (cleaned.startsWith("0")) return `+20${cleaned.slice(1)}`;
-    return `+20${cleaned}`;
+    return raw.trim();
   };
 
   const buildWhatsAppMessage = (orderId: string, data: CheckoutData) => {
     const itemLines = items.map(i =>
-      `▪ المنتج: ${i.name} - مقاس: ${i.size}${i.color ? ` - اللون: ${i.color}` : ""} - الكمية: ${i.qty} - السعر: ${i.price} ج.م`
+      `▪ المنتج: ${i.name} - مقاس: ${i.size}${i.colorName ? ` - اللون: ${i.colorName}` : (i.color ? ` - اللون: ${i.color}` : "")} - الكمية: ${i.qty} - السعر: ${i.price} ج.م`
     ).join("\n");
 
     const altLine = data.altPhone
@@ -203,7 +200,7 @@ ${itemLines}
     try {
       const orderItems = items.map(i => ({
         id: i.id, name: i.name, size: i.size,
-        color: i.color || null, qty: i.qty, price: i.price
+        color: i.colorName || i.color || null, qty: i.qty, price: i.price
       }));
 
       const { error, data } = await supabase.rpc("place_order_with_stock_deduction", {
@@ -455,7 +452,7 @@ ${itemLines}
                     />
                   </div>
                   <p className="text-[9px] text-brand-text/30 font-bold px-2">
-                    سيتم إضافة +20 تلقائياً — أدخل الرقم بدون مفتاح الدولة
+                    يرجى إدخال رقم الهاتف الصحيح للتواصل والاتصال
                   </p>
                 </div>
 

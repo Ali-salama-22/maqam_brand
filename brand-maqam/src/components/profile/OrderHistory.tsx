@@ -70,7 +70,7 @@ export default function OrderHistory() {
               </div>
               
               <div className="flex flex-col md:items-end justify-between space-y-4">
-                <span className="font-black text-brand-text text-3xl tabular-nums" dir="ltr">{order.total} <span className="text-xs opacity-30 uppercase tracking-tighter">ج.م</span></span>
+                <span className="font-black text-brand-text text-3xl tabular-nums" dir="ltr">{order.total ?? order.total_amount} <span className="text-xs opacity-30 uppercase tracking-tighter">ج.م</span></span>
                 <span className={`text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-[0.2em] shadow-sm border ${
                   order.status === "تم الاستلام" || order.status === "تم التوصيل" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" :
                   order.status === "ملغي" ? "bg-rose-500/10 text-rose-400 border-rose-500/20" :
@@ -88,7 +88,7 @@ export default function OrderHistory() {
       {/* Invoice Modal Overlay */}
       {invoiceOrder && (
         <div className="fixed inset-0 z-[200] bg-brand-bg/95 backdrop-blur-2xl overflow-y-auto pt-10 pb-20 px-4 sm:px-6 print:p-0 print:bg-white print:block transition-all duration-700 animate-in fade-in">
-          <div className="bg-[#F8F9FA] w-full max-w-3xl mx-auto rounded-[3rem] shadow-[0_0_100px_rgba(120,144,156,0.15)] relative overflow-hidden print:shadow-none print:max-w-full border border-brand-border/20">
+          <div id="customer-invoice-print" className="bg-[#F8F9FA] w-full max-w-3xl mx-auto rounded-[3rem] shadow-[0_0_100px_rgba(120,144,156,0.15)] relative overflow-hidden print:shadow-none print:max-w-full border border-brand-border/20">
             
             {/* Modal Controls - Hidden in print */}
             <div className="flex justify-between items-center p-8 border-b border-brand-border/10 bg-white/50 backdrop-blur-md print:hidden sticky top-0 z-10">
@@ -171,18 +171,18 @@ export default function OrderHistory() {
                {/* Totals */}
                <div className="flex flex-col items-start gap-6 border-t-4 border-black pb-12">
                   <div className="w-full sm:w-1/2 pt-12 space-y-4">
-                    <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.2em] opacity-40">
-                      <span>إجمالي المنتجات</span>
-                      <span>{invoiceOrder.total} ج.م</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.2em] opacity-40">
-                      <span>الشحن والتوصيل</span>
-                      <span className="text-emerald-600 font-bold">شحن مجاني</span>
-                    </div>
-                    <div className="flex justify-between items-center pt-8 border-t-2 border-black/5">
-                      <span className="font-black text-black text-2xl uppercase italic tracking-tighter">المبلغ المستحق</span>
-                      <span className="font-black text-black text-5xl tracking-tighter leading-none" dir="ltr">{invoiceOrder.total} <span className="text-xs uppercase opacity-30 tracking-tighter">ج.م</span></span>
-                    </div>
+                     <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.2em] opacity-40">
+                       <span>إجمالي المنتجات</span>
+                       <span>{invoiceOrder.total ?? invoiceOrder.total_amount} ج.م</span>
+                     </div>
+                     <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.2em] opacity-40">
+                       <span>الشحن والتوصيل</span>
+                       <span className="text-emerald-600 font-bold">شحن مجاني</span>
+                     </div>
+                     <div className="flex justify-between items-center pt-8 border-t-2 border-black/5">
+                       <span className="font-black text-black text-2xl uppercase italic tracking-tighter">المبلغ المستحق</span>
+                       <span className="font-black text-black text-5xl tracking-tighter leading-none" dir="ltr">{invoiceOrder.total ?? invoiceOrder.total_amount} <span className="text-xs uppercase opacity-30 tracking-tighter">ج.م</span></span>
+                     </div>
                   </div>
                </div>
 

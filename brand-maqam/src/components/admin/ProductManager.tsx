@@ -89,8 +89,9 @@ export default function ProductManager() {
   const [sizes, setSizes] = useState<string[]>([]);
   const [newSize, setNewSize] = useState("");
   const [stockCount, setStockCount] = useState("");
-  const [variants, setVariants] = useState<{hex: string, files: File[], sizes_stock: Record<string, number>}[]>([]);
+  const [variants, setVariants] = useState<{hex: string, name?: string, files: File[], sizes_stock: Record<string, number>}[]>([]);
   const [currentColor, setCurrentColor] = useState("#000000");
+  const [currentColorName, setCurrentColorName] = useState("");
   const [isOffer, setIsOffer] = useState(false);
   const [isNeonOffer, setIsNeonOffer] = useState(false);
 
@@ -122,7 +123,8 @@ export default function ProductManager() {
     if (!variants.find(v => v.hex === currentColor)) {
       const defaultStock: Record<string, number> = {};
       sizes.forEach(s => { defaultStock[s] = 0; });
-      setVariants([...variants, { hex: currentColor, files: [], sizes_stock: defaultStock }]);
+      setVariants([...variants, { hex: currentColor, name: currentColorName.trim() || undefined, files: [], sizes_stock: defaultStock }]);
+      setCurrentColorName("");
     }
   };
 
@@ -181,7 +183,7 @@ export default function ProductManager() {
             throw new Error(`فشل في رفع صورة اللون ${variant.hex}: ${uploadError.message}`);
           }
         }
-        uploadedVariants.push({ hex: variant.hex, images: imageUrls, sizes_stock: variant.sizes_stock });
+        uploadedVariants.push({ hex: variant.hex, name: variant.name || null, images: imageUrls, sizes_stock: variant.sizes_stock });
       }
 
       // Calculate total stock from all variants
@@ -367,7 +369,14 @@ export default function ProductManager() {
                     type="color" 
                     value={currentColor} 
                     onChange={e => setCurrentColor(e.target.value)}
-                    className="w-16 h-16 rounded-2xl cursor-pointer border-0 p-0 overflow-hidden shadow-2xl bg-brand-bg"
+                    className="w-16 h-16 rounded-2xl cursor-pointer border-0 p-0 overflow-hidden shadow-2xl bg-brand-bg shrink-0"
+                  />
+                  <input 
+                    type="text" 
+                    value={currentColorName} 
+                    onChange={e => setCurrentColorName(e.target.value)}
+                    placeholder="اسم اللون (مثال: أسود، أبيض)"
+                    className="flex-1 bg-brand-card border-2 border-brand-border rounded-2xl p-4 font-black outline-none focus:border-brand-accent transition-all text-sm"
                   />
                   <button 
                     type="button" 
@@ -394,7 +403,9 @@ export default function ProductManager() {
                        <div className="flex flex-col gap-8 relative z-10">
                           <div className="flex items-center gap-5">
                              <div className="w-12 h-12 rounded-full border-4 border-brand-card shadow-2xl" style={{ backgroundColor: variant.hex }} />
-                             <span className="font-black text-brand-text uppercase tracking-widest text-lg">{variant.hex}</span>
+                             <span className="font-black text-brand-text uppercase tracking-widest text-lg">
+                                {variant.name ? `${variant.name} (${variant.hex})` : variant.hex}
+                             </span>
                           </div>
                           
                           <div className="relative border-4 border-dashed border-brand-border rounded-3xl p-10 hover:border-brand-accent/50 hover:bg-brand-card transition-all text-center cursor-pointer overflow-hidden group/drop shadow-inner">

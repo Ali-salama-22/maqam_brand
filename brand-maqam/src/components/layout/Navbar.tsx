@@ -196,7 +196,7 @@ export default function Navbar() {
                         <span className="text-sm font-black text-brand-text italic leading-none">#{order.id.slice(0, 8).toUpperCase()}</span>
                       </div>
                       <div className="text-right">
-                         <p className="text-2xl font-black text-brand-accent leading-none italic">{order.total} <span className="text-[10px] uppercase not-italic">ج.م</span></p>
+                         <p className="text-2xl font-black text-brand-accent leading-none italic">{order.total ?? order.total_amount} <span className="text-[10px] uppercase not-italic">ج.م</span></p>
                       </div>
                     </div>
                     <div className="flex justify-between items-center pt-4 border-t border-brand-border/50">

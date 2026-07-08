@@ -10,6 +10,7 @@ export type CartItem = {
   image_url: string;
   size: string;
   color?: string; // Optinal color hex
+  colorName?: string; // Optional color name
   qty: number;
 };
 
