@@ -263,16 +263,16 @@ ${itemLines}
   const showAuthWall = !user && !isGuest;
 
   return (
-    <div className="w-full min-h-[80vh] flex flex-col items-center py-20 px-4 bg-brand-bg">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-16">
+    <div className="w-full min-h-[80vh] flex flex-col items-center py-10 sm:py-20 px-3 sm:px-4 bg-brand-bg">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
 
         {/* ── Left: Cart Items ─────────────────────────────────────────────── */}
-        <div className="lg:col-span-2 flex flex-col space-y-10">
-          <div className="flex items-center gap-6">
-            <div className="bg-brand-text text-brand-bg p-4 rounded-3xl shadow-2xl aura-glow">
-              <ShoppingBag size={32} />
+        <div className="lg:col-span-2 flex flex-col space-y-6 sm:space-y-10">
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div className="bg-brand-text text-brand-bg p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-2xl aura-glow">
+              <ShoppingBag size={24} className="sm:w-8 sm:h-8" />
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-brand-text tracking-tighter uppercase italic">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-brand-text tracking-tighter uppercase italic">
               حقيبة التسوق
             </h1>
           </div>
@@ -288,35 +288,35 @@ ${itemLines}
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4 sm:gap-8">
               {items.map((item) => (
-                <div key={item.cartId} className="group flex bg-brand-card border border-brand-border p-6 rounded-[2.5rem] items-center shadow-sm hover:shadow-2xl hover:border-brand-accent/20 transition-all duration-500">
-                  <div className="w-32 h-32 bg-brand-bg rounded-3xl mr-6 flex-shrink-0 flex items-center justify-center relative overflow-hidden border border-brand-border">
+                <div key={item.cartId} className="group flex flex-col sm:flex-row bg-brand-card border border-brand-border p-4 sm:p-6 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:border-brand-accent/20 transition-all duration-500">
+                  <div className="w-full sm:w-28 sm:h-28 h-40 mb-3 sm:mb-0 bg-brand-bg rounded-2xl sm:mr-6 flex-shrink-0 flex items-center justify-center relative overflow-hidden border border-brand-border">
                     {item.image_url ? (
                       <Image src={item.image_url} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     ) : (
                       <PackageOpen size={40} className="text-brand-text/10" />
                     )}
                   </div>
-                  <div className="flex-grow flex flex-col sm:flex-row justify-between sm:items-center px-4">
-                    <div className="space-y-2">
-                      <h3 className="font-black text-brand-text text-2xl uppercase italic tracking-tighter leading-none">{item.name}</h3>
-                      <div className="flex items-center gap-4 text-[10px] font-black text-brand-text/30 uppercase tracking-[0.2em]">
-                        <span className="bg-brand-bg px-3 py-1 rounded-full border border-brand-border">المقاس: {item.size}</span>
+                  <div className="flex-grow flex flex-row justify-between items-center sm:px-4">
+                    <div className="space-y-1.5 sm:space-y-2">
+                      <h3 className="font-black text-brand-text text-lg sm:text-2xl uppercase italic tracking-tighter leading-none">{item.name}</h3>
+                      <div className="flex items-center gap-2 sm:gap-4 text-[10px] font-black text-brand-text/30 uppercase tracking-[0.2em]">
+                        <span className="bg-brand-bg px-2 sm:px-3 py-1 rounded-full border border-brand-border">المقاس: {item.size}</span>
                         {item.color && <span className="w-3 h-3 rounded-full border border-brand-border" style={{ backgroundColor: item.color }} />}
                       </div>
-                      <div className="flex items-center gap-6 bg-brand-bg border border-brand-border rounded-2xl px-5 py-2.5 mt-4 w-max shadow-inner">
+                      <div className="flex items-center gap-4 sm:gap-6 bg-brand-bg border border-brand-border rounded-xl sm:rounded-2xl px-3 sm:px-5 py-2 sm:py-2.5 mt-2 sm:mt-4 w-max shadow-inner">
                         <button onClick={() => updateQty(item.cartId, item.qty - 1)} className="font-black text-brand-text/40 hover:text-brand-text transition-colors">-</button>
                         <span className="font-black text-brand-text min-w-[20px] text-center">{item.qty}</span>
                         <button onClick={() => updateQty(item.cartId, item.qty + 1)} className="font-black text-brand-text/40 hover:text-brand-text transition-colors">+</button>
                       </div>
                     </div>
-                    <div className="flex flex-col sm:items-end justify-between mt-6 sm:mt-0 gap-4">
-                      <span className="text-3xl font-black text-brand-text">
+                    <div className="flex flex-col items-end justify-between gap-3 sm:gap-4 ml-2">
+                      <span className="text-xl sm:text-3xl font-black text-brand-text">
                         {item.price * item.qty} <span className="text-xs opacity-40 uppercase tracking-tighter">ج.م</span>
                       </span>
-                      <button onClick={() => removeFromCart(item.cartId)} className="text-brand-text/20 hover:text-red-500 transition-all p-2 hover:bg-red-500/5 rounded-xl">
-                        <Trash2 size={24} />
+                      <button onClick={() => removeFromCart(item.cartId)} className="text-brand-text/20 hover:text-red-500 transition-all p-1.5 sm:p-2 hover:bg-red-500/5 rounded-xl">
+                        <Trash2 size={20} className="sm:w-6 sm:h-6" />
                       </button>
                     </div>
                   </div>
@@ -391,7 +391,7 @@ ${itemLines}
 
           ) : (
             /* ── Checkout Panel ─────────────────────────────────────────────── */
-            <div className="sticky top-28 bg-brand-card border border-brand-border p-10 rounded-[3rem] shadow-2xl flex flex-col overflow-hidden">
+            <div className="sticky top-20 sm:top-28 bg-brand-card border border-brand-border p-5 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-2xl flex flex-col overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-full -mr-16 -mt-16 blur-3xl pointer-events-none" />
 
               {/* Guest badge */}

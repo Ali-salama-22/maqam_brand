@@ -97,8 +97,8 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
   const currentImage = activeImages[currentImageIndex] || activeImages[0];
 
   return (
-    <div className="w-full flex-grow py-12 px-4 bg-brand-bg transition-colors duration-500">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 lg:gap-20">
+    <div className="w-full flex-grow py-6 sm:py-12 px-3 sm:px-4 bg-brand-bg transition-colors duration-500">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 lg:gap-20">
         
         {/* Left Side: Images */}
         <div className="w-full md:w-1/2 flex flex-col gap-4">
@@ -151,16 +151,16 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
              <p className="text-[10px] font-black text-brand-text/30 uppercase tracking-[0.3em]">المرجع #{product.id.slice(0,8).toUpperCase()}</p>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-black text-brand-text tracking-tighter leading-[0.85] mb-8 uppercase italic">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-brand-text tracking-tighter leading-tight sm:leading-[0.85] mb-4 sm:mb-8 uppercase italic">
             {product.name}
           </h1>
           
-          <div className="flex items-center gap-8 mb-12">
-            <span className="text-5xl font-black text-brand-text drop-shadow-sm flex items-baseline gap-2">
+          <div className="flex items-center gap-4 sm:gap-8 mb-6 sm:mb-12">
+            <span className="text-3xl sm:text-5xl font-black text-brand-text drop-shadow-sm flex items-baseline gap-2">
               {product.price} <span className="text-sm opacity-40 uppercase tracking-tighter font-bold">ج.م</span>
             </span>
             {product.old_price && (
-              <span className="text-2xl font-bold line-through text-brand-text/20 decoration-brand-accent/50">
+              <span className="text-lg sm:text-2xl font-bold line-through text-brand-text/20 decoration-brand-accent/50">
                 {product.old_price} ج.م
               </span>
             )}
@@ -241,27 +241,28 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
           })()}
 
           {/* Actions */}
-          <div className="flex gap-4 mt-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-auto">
             <button 
               onClick={handleAddToCart}
               disabled={(() => {
                 const cv = product?.variants?.find((v: any) => v.hex === selectedColor);
                 return cv?.sizes_stock?.[selectedSize] === 0;
               })()}
-              className={`flex-grow btn-melt py-6 rounded-3xl font-black uppercase tracking-[0.3em] text-xl flex items-center justify-center gap-4 hover:shadow-[0_0_30px_rgba(120,144,156,0.3)] ${
+              className={`flex-grow btn-melt py-4 sm:py-6 rounded-2xl sm:rounded-3xl font-black uppercase tracking-[0.3em] text-base sm:text-xl flex items-center justify-center gap-3 sm:gap-4 hover:shadow-[0_0_30px_rgba(120,144,156,0.3)] ${
                 (() => { const cv = product?.variants?.find((v: any) => v.hex === selectedColor); return cv?.sizes_stock?.[selectedSize] === 0; })() ? 'opacity-40 cursor-not-allowed' : ''
               }`}
             >
               {(() => { const cv = product?.variants?.find((v: any) => v.hex === selectedColor); return cv?.sizes_stock?.[selectedSize] === 0; })() 
-                ? <><ShoppingCart size={28} className="opacity-50" /> نفدت الكمية</>
-                : <><ShoppingCart size={28} className="aura-glow" /> إضافة للطلب</>}
+                ? <><ShoppingCart size={22} className="opacity-50" /> نفدت الكمية</>
+                : <><ShoppingCart size={22} className="aura-glow" /> إضافة للطلب</>
+              }
             </button>
             <button 
               onClick={handleToggleFavorite}
               disabled={favoriteLoading}
-              className={`p-6 rounded-3xl border-2 border-brand-border transition-all duration-500 group ${isFavorite ? 'bg-red-500 border-red-500 text-white' : 'text-brand-text/40 hover:bg-brand-text hover:text-brand-bg hover:border-brand-text'}`}
+              className={`py-4 sm:py-6 px-5 sm:p-6 rounded-2xl sm:rounded-3xl border-2 border-brand-border transition-all duration-500 group ${isFavorite ? 'bg-red-500 border-red-500 text-white' : 'text-brand-text/40 hover:bg-brand-text hover:text-brand-bg hover:border-brand-text'}`}
             >
-               <Heart size={28} className={isFavorite ? "fill-current" : "group-hover:fill-current"} />
+               <Heart size={24} className={isFavorite ? "fill-current" : "group-hover:fill-current"} />
             </button>
           </div>
 

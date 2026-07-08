@@ -23,7 +23,7 @@ const iconBtn: React.CSSProperties = {
   border: "1px solid var(--brand-border)",
   boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
   color: "var(--brand-accent)",
-  padding: "1rem",
+  padding: "0.6rem",
   borderRadius: "9999px",
   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   display: "flex",
@@ -105,45 +105,45 @@ export default function Navbar() {
     <>
       {/* ── Theme-Aware Navbar ── */}
       <nav
-        className="w-full fixed top-0 z-50 h-20 flex items-center transition-colors duration-500"
+        className="w-full fixed top-0 z-50 h-16 sm:h-20 flex items-center transition-colors duration-500"
         style={{
           background: "var(--brand-bg)",
           borderBottom: "1px solid var(--brand-border)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full flex justify-between items-center">
 
           {/* Left Side: Cart, Theme & Profile */}
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-5">
+            <div className="flex items-center gap-1.5 sm:gap-3">
               <button 
                 onClick={toggleTheme} 
                 style={iconBtn} 
                 onMouseEnter={hoverIn} 
                 onMouseLeave={hoverOut}
               >
-                {theme === "light" ? <Moon size={24} /> : <Sun size={24} />}
+                {theme === "light" ? <Moon size={18} className="sm:w-6 sm:h-6" /> : <Sun size={18} className="sm:w-6 sm:h-6" />}
               </button>
               
               <button onClick={() => setShowCart(true)} style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut} className="relative">
-                <SketchyCart className="w-8 h-8" />
+                <SketchyCart className="w-6 h-6 sm:w-8 sm:h-8" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-black shadow"
+                  <span className="absolute -top-1 -right-1 text-white text-[10px] w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-black shadow"
                     style={{ background: "var(--brand-accent)" }}>
                     {cartCount}
                   </span>
                 )}
               </button>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-4">
               {isAdmin && (
                 <Link href="/admin" style={{ ...iconBtn, color: "#B0C4DE" }} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-                  <LayoutDashboard size={32} />
+                  <LayoutDashboard size={20} className="sm:w-8 sm:h-8" />
                 </Link>
               )}
               <div className="relative">
                 <Link href="/profile" style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-                  <SketchyUser className="w-8 h-8" />
+                  <SketchyUser className="w-6 h-6 sm:w-8 sm:h-8" />
                 </Link>
               </div>
             </div>
@@ -157,12 +157,12 @@ export default function Navbar() {
           </div>
 
           {/* Right Side: Shipping & Social */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-1.5 sm:gap-5">
             <button onClick={() => setShowOrderModal(true)} style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-              <SketchyTruck className="w-8 h-8" />
+              <SketchyTruck className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
             <Link href="https://wa.me/201032904142" target="_blank" style={iconBtn} onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-              <SketchyGroup className="w-8 h-8" />
+              <SketchyGroup className="w-6 h-6 sm:w-8 sm:h-8" />
             </Link>
           </div>
         </div>

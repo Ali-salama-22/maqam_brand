@@ -72,9 +72,9 @@ export default function OffersSection() {
     const isVideo = settings.bannerMediaType === "video";
 
     return (
-      <section className="py-12 w-full relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative w-full h-[340px] md:h-[480px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-brand-border group cursor-pointer">
+      <section className="py-6 sm:py-12 w-full relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 sm:px-6 lg:px-8">
+          <div className="relative w-full h-[240px] sm:h-[340px] md:h-[480px] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-brand-border group cursor-pointer">
 
             {/* Background Media */}
             {hasMedia && isVideo ? (
@@ -103,30 +103,30 @@ export default function OffersSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
             {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-14">
+            <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 md:p-14">
               <div className="max-w-xl">
                 {settings.bannerTitle && (
-                  <div className="mb-4">
-                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-accent bg-brand-accent/10 border border-brand-accent/30 px-4 py-2 rounded-full backdrop-blur-sm">
+                  <div className="mb-2 sm:mb-4">
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.5em] text-brand-accent bg-brand-accent/10 border border-brand-accent/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm">
                       MAQAM COLLECTION
                     </span>
                   </div>
                 )}
                 {settings.bannerTitle && (
-                  <h2 className="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-tight mb-4 drop-shadow-2xl">
+                  <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-tight mb-2 sm:mb-4 drop-shadow-2xl">
                     {settings.bannerTitle}
                   </h2>
                 )}
                 {settings.bannerSubtitle && (
-                  <p className="text-sm md:text-base font-bold text-white/70 mb-8 leading-relaxed max-w-md">
+                  <p className="text-xs sm:text-sm md:text-base font-bold text-white/70 mb-4 sm:mb-8 leading-relaxed max-w-md">
                     {settings.bannerSubtitle}
                   </p>
                 )}
                 <Link
                   href="/products"
-                  className="inline-flex items-center gap-3 bg-white text-brand-text px-8 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-brand-accent hover:text-brand-text transition-all shadow-2xl hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 sm:gap-3 bg-white text-brand-text px-5 sm:px-8 py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest hover:bg-brand-accent hover:text-brand-text transition-all shadow-2xl hover:scale-105 active:scale-95"
                 >
-                  تسوق الآن <ArrowLeft size={16} />
+                  تسوق الآن <ArrowLeft size={14} />
                 </Link>
               </div>
             </div>
@@ -145,22 +145,22 @@ export default function OffersSection() {
   if (offers.length === 0) return null;
 
   return (
-    <section className="py-24 w-full relative overflow-hidden bg-brand-bg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-6">
+    <section className="py-12 sm:py-24 w-full relative overflow-hidden bg-brand-bg">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 sm:mb-16 gap-4 sm:gap-6">
           <div className="text-center md:text-right">
-            <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter text-brand-text">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black uppercase italic tracking-tighter text-brand-text">
               عروض <span className="text-brand-accent">خاصة</span>
             </h2>
-            <div className="h-[4px] w-40 mt-4 rounded-full mx-auto md:mx-0 bg-brand-accent/20" />
+            <div className="h-[4px] w-28 sm:w-40 mt-3 sm:mt-4 rounded-full mx-auto md:mx-0 bg-brand-accent/20" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-10">
           {offers.map((offer) => (
             <div
               key={offer.id}
-              className="group relative h-[450px] md:h-[600px] rounded-[3rem] overflow-hidden border border-brand-border bg-brand-card shadow-2xl flex flex-col justify-end p-10"
+              className="group relative h-[320px] sm:h-[450px] md:h-[600px] rounded-[2rem] sm:rounded-[3rem] overflow-hidden border border-brand-border bg-brand-card shadow-2xl flex flex-col justify-end p-6 sm:p-10"
             >
               {offer.image_url && (
                 <Image
@@ -170,25 +170,25 @@ export default function OffersSection() {
                   className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
                 />
               )}
-              <div className="relative z-10 flex flex-col gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="bg-brand-accent text-white p-3 rounded-2xl shadow-xl">
-                    <TicketPercent size={28} />
+              <div className="relative z-10 flex flex-col gap-3 sm:gap-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="bg-brand-accent text-white p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-xl">
+                    <TicketPercent size={20} className="sm:w-7 sm:h-7" />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-[0.5em] text-brand-accent">عرض محدود الكمية</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-accent">عرض محدود الكمية</span>
                 </div>
-                <h3 className="text-4xl md:text-5xl font-black text-brand-text uppercase italic tracking-tighter leading-tight">
+                <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-brand-text uppercase italic tracking-tighter leading-tight">
                   {offer.title}
                 </h3>
-                <p className="text-sm font-bold opacity-60 text-brand-text max-w-sm mb-6">{offer.description}</p>
-                <div className="flex flex-col sm:flex-row gap-6 items-center">
-                  <div className="bg-brand-bg border border-brand-border px-8 py-5 rounded-2xl flex flex-col items-center justify-center min-w-[180px] shadow-sm">
+                <p className="text-xs sm:text-sm font-bold opacity-60 text-brand-text max-w-sm mb-2 sm:mb-6">{offer.description}</p>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center">
+                  <div className="bg-brand-bg border border-brand-border px-5 sm:px-8 py-3 sm:py-5 rounded-2xl flex flex-col items-center justify-center min-w-[140px] sm:min-w-[180px] shadow-sm">
                     <span className="text-[10px] font-black uppercase opacity-20 mb-1">كود الخصم</span>
-                    <span className="text-2xl font-black tracking-widest text-brand-accent select-all uppercase">{offer.discount_code}</span>
+                    <span className="text-lg sm:text-2xl font-black tracking-widest text-brand-accent select-all uppercase">{offer.discount_code}</span>
                   </div>
                   <Link
                     href="/products"
-                    className="btn-melt px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.4em] transition-all flex items-center justify-center w-full sm:w-auto"
+                    className="btn-melt px-6 sm:px-10 py-3 sm:py-5 rounded-full font-black text-[10px] uppercase tracking-[0.4em] transition-all flex items-center justify-center w-full sm:w-auto"
                   >
                     تسوق الآن
                   </Link>

@@ -148,17 +148,17 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-grow relative z-30 -mt-8">
-          <div className="bg-brand-card/90 backdrop-blur-xl border border-brand-border p-4 rounded-2xl shadow-xl flex flex-col gap-2">
-            <h3 className="text-xl font-black uppercase tracking-tight line-clamp-1 text-brand-text italic drop-shadow-md">
+        <div className="p-3 sm:p-6 flex flex-col flex-grow relative z-30 -mt-8">
+          <div className="bg-brand-card/90 backdrop-blur-xl border border-brand-border p-3 sm:p-4 rounded-2xl shadow-xl flex flex-col gap-1.5 sm:gap-2">
+            <h3 className="text-sm sm:text-xl font-black uppercase tracking-tight line-clamp-1 text-brand-text italic drop-shadow-md">
               {name}
             </h3>
 
-            <div className="flex justify-between items-end mt-2">
+            <div className="flex justify-between items-end mt-1 sm:mt-2">
               <div className="flex flex-col">
                 {old_price ? (
                   <>
-                    <span className="font-black text-2xl text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] leading-none mb-1">
+                    <span className="font-black text-lg sm:text-2xl text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)] leading-none mb-1">
                       {price} <span className="text-[10px] font-bold uppercase text-brand-text">ج.م</span>
                     </span>
                     <span className="text-xs font-bold text-brand-text/50 line-through decoration-red-500 decoration-2">
@@ -166,7 +166,7 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
                     </span>
                   </>
                 ) : (
-                  <span className="font-black text-2xl text-brand-text leading-none group-hover:text-brand-accent transition-colors duration-500">
+                  <span className="font-black text-lg sm:text-2xl text-brand-text leading-none group-hover:text-brand-accent transition-colors duration-500">
                     {price} <span className="text-[10px] font-bold uppercase text-brand-text/50">ج.م</span>
                   </span>
                 )}
@@ -180,7 +180,7 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
       </Link>
 
       {/* Add to Cart Section */}
-      <div className="px-6 pb-6 pt-0 z-40 relative">
+      <div className="px-3 sm:px-6 pb-4 sm:pb-6 pt-0 z-40 relative">
         {/* Size Picker Dropdown */}
         {showSizes && sizes.length > 1 && (
           <div className="mb-3 bg-brand-bg border-2 border-brand-accent/30 rounded-2xl p-3 flex flex-wrap gap-2 shadow-xl animate-in fade-in slide-in-from-bottom-2">
@@ -189,7 +189,7 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
               <button
                 key={size}
                 onClick={(e) => handleSelectSize(e, size)}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all hover:scale-105 active:scale-95
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all hover:scale-105 active:scale-95
                   ${selectedSize === size
                     ? "bg-brand-accent text-brand-bg border-brand-accent"
                     : "bg-brand-card text-brand-text border-brand-border hover:border-brand-accent/50"
@@ -204,8 +204,8 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
         <button
           onClick={handleAddToCart}
           disabled={stock_count === 0}
-          className={`w-full py-4 rounded-xl font-black uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-3
-            opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out
+          className={`w-full py-3 sm:py-4 rounded-xl font-black uppercase tracking-[0.2em] text-xs sm:text-sm flex items-center justify-center gap-2 sm:gap-3
+            opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out
             ${stock_count === 0 
               ? "bg-brand-text/10 text-brand-text/40 cursor-not-allowed"
               : added
@@ -214,13 +214,13 @@ export default function ProductCard({ id, name, price, old_price, sizes, image_u
             }`}
         >
           {stock_count === 0 ? (
-            <><ShoppingCart size={18} className="opacity-50" /> نفدت الكمية</>
+            <><ShoppingCart size={16} className="opacity-50" /> نفدت الكمية</>
           ) : added ? (
-            <><Check size={18} /> تمت الإضافة</>
+            <><Check size={16} /> تمت الإضافة</>
           ) : sizes.length > 1 && !selectedSize ? (
-            <><ChevronDown size={18} /> اختر المقاس</>
+            <><ChevronDown size={16} /> اختر المقاس</>
           ) : (
-            <><ShoppingCart size={18} /> إضافة إلى العربة</>
+            <><ShoppingCart size={16} /> إضافة إلى العربة</>
           )}
         </button>
       </div>
