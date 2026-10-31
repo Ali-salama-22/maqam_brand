@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { createClient } from "@/lib/supabaseBrowser";
 import Image from "next/image";
 import Link from "next/link";
-import { CircleDashed } from "lucide-react";
+import { Sparkles, ArrowLeft } from "lucide-react";
 
 type Product = {
   id: string;
@@ -41,19 +41,22 @@ export default function NewCollection() {
           <Link href="/products" className="text-sm font-black uppercase tracking-[0.3em] text-brand-accent underline">عرض الكل</Link>
         </div>
 
-        <div ref={scrollRef} className="flex gap-4 sm:gap-10 overflow-x-auto pb-8 sm:pb-12 scrollbar-hide snap-x px-2" dir="rtl">
+        <div ref={scrollRef} className="flex gap-4 sm:gap-8 overflow-x-auto pb-6 sm:pb-10 scrollbar-hide mobile-snap-slider px-2 sm:px-4" dir="rtl">
           {products.map((product) => (
-            <Link href={`/products/${product.id}`} key={product.id} className="min-w-[200px] sm:min-w-[300px] md:min-w-[400px] snap-center group">
-              <div className="relative w-full h-[320px] sm:h-[500px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden transition-all duration-300 border border-brand-border bg-brand-bg shadow-lg hover:shadow-2xl">
+            <Link href={`/products/${product.id}`} key={product.id} className="min-w-[220px] sm:min-w-[320px] md:min-w-[380px] shrink-0 group">
+              <div className="relative w-full h-[320px] sm:h-[460px] rounded-3xl sm:rounded-[2.5rem] overflow-hidden transition-all duration-300 border border-brand-border bg-brand-bg shadow-md hover:shadow-2xl">
                 {product.image_url ? (
-                  <Image src={product.image_url} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <Image src={product.image_url} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 640px) 220px, 380px" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center opacity-10"><CircleDashed size={64} /></div>
+                  <div className="w-full h-full flex items-center justify-center opacity-30"><Sparkles size={48} className="text-brand-accent" /></div>
                 )}
-                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-8 bg-brand-card/90 backdrop-blur-md border-t border-brand-border">
-                   <h3 className="text-base sm:text-2xl font-black text-brand-text uppercase italic tracking-tight">{product.name}</h3>
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 bg-brand-card/90 backdrop-blur-xl border-t border-brand-border">
+                   <h3 className="text-base sm:text-xl font-black text-brand-text uppercase italic tracking-tight">{product.name}</h3>
                    <div className="flex justify-between items-center mt-1 sm:mt-2">
                      <span className="text-sm sm:text-lg font-black text-brand-accent">{product.price} ج.م</span>
+                     <span className="text-[10px] font-black uppercase tracking-wider text-brand-text/50 flex items-center gap-1">
+                       تفاصيل <ArrowLeft size={12} />
+                     </span>
                    </div>
                 </div>
               </div>

@@ -27,7 +27,10 @@ export default function ProductDetailPage(props: { params: Promise<{ slug: strin
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const { data } = await supabase.from("products").select("*").eq("id", params.slug).single();
+      const decodedParam = decodeURIComponent(params.slug);
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(decodedParam);
+      const query = supabase.from("products").select("*");
+      const { data } = await (isUUID ? query.eq("id", decodedParam) : query.eq("slug", decodedParam)).single();
       if (data) {
         setProduct(data);
         if (data.sizes && data.sizes.length > 0) {

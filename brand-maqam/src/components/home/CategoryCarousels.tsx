@@ -104,9 +104,9 @@ export default function CategoryCarousels() {
                     ))}
                  </div>
                  
-                 {/* Gradient Fades */}
-                 <div className="absolute top-0 right-0 bottom-8 w-20 bg-gradient-to-l from-brand-bg to-transparent pointer-events-none" />
-                 <div className="absolute top-0 left-0 bottom-8 w-20 bg-gradient-to-r from-brand-bg to-transparent pointer-events-none" />
+                 {/* Gradient Fades for desktop only */}
+                 <div className="hidden sm:block absolute top-0 right-0 bottom-8 w-16 bg-gradient-to-l from-brand-bg to-transparent pointer-events-none" />
+                 <div className="hidden sm:block absolute top-0 left-0 bottom-8 w-16 bg-gradient-to-r from-brand-bg to-transparent pointer-events-none" />
               </div>
 
             </div>

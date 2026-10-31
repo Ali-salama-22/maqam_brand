@@ -34,7 +34,7 @@ export default function RootLayout({
           <CartProvider>
             <SiteTracker />
             <Navbar />
-            <main className="flex-grow flex flex-col w-full pt-20">{children}</main>
+            <main className="flex-grow flex flex-col w-full pt-16 sm:pt-20 pb-20 sm:pb-0">{children}</main>
             <Footer />
           </CartProvider>
         </ThemeProvider>

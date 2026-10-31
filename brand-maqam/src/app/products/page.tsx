@@ -2,8 +2,6 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { createClient } from "@/lib/supabaseBrowser";
-import Image from "next/image";
-import Link from "next/link";
 import ProductCard from "@/components/product/ProductCard";
 import { RefreshCw } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -61,7 +59,7 @@ function CatalogContent() {
             <span className="font-bold text-sm text-brand-accent">{filtered.length} منتجات</span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {filtered.map(product => (
               <ProductCard
                 key={product.id}

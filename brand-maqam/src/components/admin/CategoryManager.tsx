@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabaseBrowser";
 import { Layers, Image as ImageIcon, Trash2, Check, Rss, Save, AlertTriangle, X, RefreshCw } from "lucide-react";
 
-type Category = { id: string; name: string; image_url: string };
+type Category = { 
+  id: string; 
+  name: string; 
+  image_url: string;
+  display_type?: string;
+  slug?: string;
+};
 
 /* ── Inline Confirmation Modal ── */
 function ConfirmModal({
@@ -169,6 +175,17 @@ export default function CategoryManager() {
     fetchData();
   };
 
+  const handleToggleDisplayType = async (id: string, currentType?: string) => {
+    const newType = currentType === "showcase" ? "circular" : "showcase";
+    // Optimistic UI update
+    setCategories(prev => prev.map(c => c.id === id ? { ...c, display_type: newType } : c));
+    const { error } = await supabase.from("categories").update({ display_type: newType }).eq("id", id);
+    if (error) {
+      alert("حدث خطأ أثناء تعديل نمط العرض: " + error.message);
+      fetchData();
+    }
+  };
+
   const handleSaveBanner = async () => {
     setBannerLoading(true);
     const payload = JSON.stringify({ main: bannerText, signature: signatureTextContent });
@@ -297,24 +314,50 @@ export default function CategoryManager() {
                   >
                     <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-full blur-3xl -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
                     
-                    <div className="flex items-center gap-6 relative z-10">
+                    <div className="flex items-center gap-4 sm:gap-6 relative z-10 flex-wrap sm:flex-nowrap">
                       <div
-                        className="w-16 h-16 rounded-full bg-brand-bg border-2 border-brand-border bg-cover bg-center overflow-hidden shadow-2xl group-hover:scale-110 transition-all duration-700"
+                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-brand-bg border-2 border-brand-border bg-cover bg-center overflow-hidden shadow-xl shrink-0"
                         style={{ backgroundImage: `url(${cat.image_url})` }}
                       >
                         {!cat.image_url && (
                           <div className="w-full h-full flex items-center justify-center">
-                            <ImageIcon size={24} className="text-brand-text/10" />
+                            <ImageIcon size={20} className="text-brand-text/20" />
                           </div>
                         )}
                       </div>
-                      <div className="flex flex-col">
-                        <span className="font-black text-brand-text text-xl uppercase italic tracking-tighter leading-none">{cat.name}</span>
-                        {isProtected && (
-                          <span className="text-[9px] font-black text-brand-accent uppercase tracking-[0.3em] mt-2 bg-brand-accent/5 px-3 py-1 rounded-full border border-brand-accent/20 w-max">
-                             Core Department
-                          </span>
-                        )}
+                      <div className="flex flex-col gap-1">
+                        <span className="font-black text-brand-text text-lg sm:text-xl uppercase italic tracking-tight">{cat.name}</span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* Display Type Toggle Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleDisplayType(cat.id, cat.display_type)}
+                            className={`px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider transition-all border flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 ${
+                              cat.display_type === "showcase"
+                                ? "bg-brand-accent/20 border-brand-accent text-brand-text"
+                                : "bg-brand-bg border-brand-border text-brand-text/70 hover:border-brand-accent/40"
+                            }`}
+                            title="اضغط للتبديل بين العرض الدائري بالأعلى والمعرض المستطيل"
+                          >
+                            {cat.display_type === "showcase" ? (
+                              <>
+                                <span className="w-2 h-2 rounded-sm bg-brand-accent inline-block" />
+                                🔲 عرض مستطيل (معرض المنتجات)
+                              </>
+                            ) : (
+                              <>
+                                <span className="w-2 h-2 rounded-full bg-brand-accent inline-block" />
+                                ⚪ أيقونة دائرية (أعلى الصفحة)
+                              </>
+                            )}
+                          </button>
+
+                          {isProtected && (
+                            <span className="text-[9px] font-black text-brand-accent uppercase tracking-[0.2em] bg-brand-accent/5 px-2.5 py-1 rounded-full border border-brand-accent/20">
+                              Core
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -322,13 +365,14 @@ export default function CategoryManager() {
                       type="button"
                       onClick={() => requestDelete(cat.id, cat.name)}
                       disabled={isProtected}
-                      className={`p-4 rounded-2xl transition-all relative z-10 ${
+                      className={`p-3 sm:p-4 rounded-2xl transition-all relative z-10 shrink-0 ${
                         isProtected
-                          ? "opacity-5 cursor-not-allowed text-brand-text"
-                          : "text-red-500 hover:bg-red-500/10 hover:scale-110"
+                          ? "opacity-10 cursor-not-allowed text-brand-text"
+                          : "text-red-500 hover:bg-red-500/10 hover:scale-110 active:scale-95"
                       }`}
+                      title={isProtected ? "قسم محمي" : "حذف القسم"}
                     >
-                      <Trash2 size={28} />
+                      <Trash2 size={24} />
                     </button>
                   </div>
                 );

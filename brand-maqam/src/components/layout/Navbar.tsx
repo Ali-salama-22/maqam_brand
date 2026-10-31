@@ -2,14 +2,20 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import MaqamLogo from "@/components/common/MaqamLogo";
-import {
-  SketchyCart,
-  SketchyUser,
-  SketchyTruck,
-  SketchyGroup,
-} from "@/components/common/SketchyIcons";
-import { LayoutDashboard, RefreshCw, Sun, Moon } from "lucide-react";
+import { 
+  ShoppingBag, 
+  User, 
+  Truck, 
+  LayoutDashboard, 
+  RefreshCw, 
+  Sun, 
+  Moon,
+  Home,
+  LayoutGrid,
+  ShieldCheck
+} from "lucide-react";
 import CartSlideOver from "@/components/layout/CartSlideOver";
 import { useCart } from "@/lib/CartContext";
 import { useTheme } from "@/lib/ThemeContext";
@@ -32,6 +38,7 @@ const iconBtn: React.CSSProperties = {
 };
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -88,106 +95,226 @@ export default function Navbar() {
     }
   }, [showOrderModal, supabase]);
 
-
-
-  const btnClass = "bg-brand-card border border-brand-border shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-brand-accent p-2 sm:p-3.5 rounded-full transition-all duration-300 flex items-center justify-center hover:scale-105 active:scale-95 hover:shadow-[0_0_15px_rgba(188,212,230,0.4)] hover:-translate-y-0.5 shrink-0";
+  const btnClass = "bg-brand-card border border-brand-border shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-brand-accent p-2.5 sm:p-3 rounded-full transition-all duration-300 flex items-center justify-center hover:scale-105 active:scale-95 hover:shadow-[0_0_15px_rgba(188,212,230,0.4)] hover:-translate-y-0.5 shrink-0";
 
   return (
     <>
-      {/* ── Theme-Aware Navbar ── */}
+      {/* ── Top Fixed Navbar ── */}
       <nav
-        className="w-full fixed top-0 z-50 h-16 sm:h-20 flex items-center transition-colors duration-500"
+        className={`w-full fixed top-0 z-50 h-16 sm:h-20 flex items-center transition-all duration-300 ${
+          scrolled ? "bg-brand-bg/90 backdrop-blur-xl shadow-sm" : "bg-brand-bg"
+        }`}
         style={{
-          background: "var(--brand-bg)",
           borderBottom: "1px solid var(--brand-border)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full flex justify-between items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
 
-          {/* Left Side: Cart, Theme & Profile */}
-          <div className="flex items-center gap-1.5 sm:gap-4">
-            <div className="flex items-center gap-1.5 sm:gap-2.5">
-              <button 
-                onClick={toggleTheme} 
-                className={btnClass}
-              >
-                {theme === "light" ? <Moon size={18} className="sm:w-6 sm:h-6" /> : <Sun size={18} className="sm:w-6 sm:h-6" />}
-              </button>
-              
-              <button onClick={() => setShowCart(true)} className={`${btnClass} relative`}>
-                <SketchyCart className="w-5 h-5 sm:w-7 sm:h-7" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 text-white text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full font-black shadow"
-                    style={{ background: "var(--brand-accent)" }}>
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-            <div className="flex items-center gap-1.5 sm:gap-3">
-              {isAdmin && (
-                <Link href="/admin" className={btnClass} style={{ color: "#B0C4DE" }}>
-                  <LayoutDashboard size={18} className="sm:w-7 sm:h-7" />
-                </Link>
+          {/* Desktop Left Controls */}
+          <div className="hidden sm:flex items-center gap-3">
+            <button 
+              onClick={toggleTheme} 
+              className={btnClass}
+              title={theme === "light" ? "الوضع الليلي" : "الوضع النهاري"}
+              aria-label="Toggle Theme"
+            >
+              {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
+            
+            <button 
+              onClick={() => setShowCart(true)} 
+              className={`${btnClass} relative`}
+              title="سلة التسوق"
+              aria-label="Shopping Cart"
+            >
+              <ShoppingBag size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-black shadow-md bg-brand-accent">
+                  {cartCount}
+                </span>
               )}
-              <div className="relative">
-                <Link href="/profile" className={btnClass}>
-                  <SketchyUser className="w-5 h-5 sm:w-7 sm:h-7" />
-                </Link>
-              </div>
-            </div>
-          </div>
+            </button>
 
-          {/* Center: Logo */}
-          <div className="flex-shrink-0 mx-auto sm:mx-0">
-            <Link href="/">
-              <MaqamLogo className="hover:scale-105 transition-transform duration-500" />
+            {isAdmin && (
+              <Link 
+                href="/admin" 
+                className={btnClass} 
+                title="لوحة الإدارة"
+                aria-label="Admin Dashboard"
+              >
+                <LayoutDashboard size={20} />
+              </Link>
+            )}
+
+            <Link 
+              href="/profile" 
+              className={btnClass}
+              title="حسابي"
+              aria-label="Profile"
+            >
+              <User size={20} />
             </Link>
           </div>
 
-          {/* Right Side: Shipping & Social */}
-          <div className="flex items-center gap-1.5 sm:gap-4 justify-end">
-            <button onClick={() => setShowOrderModal(true)} className={btnClass}>
-              <SketchyTruck className="w-5 h-5 sm:w-7 sm:h-7" />
+          {/* Mobile Left Controls (Minimal & Compact) */}
+          <div className="flex sm:hidden items-center gap-2">
+            <button 
+              onClick={toggleTheme} 
+              className="p-2.5 rounded-full border border-brand-border bg-brand-card text-brand-accent shadow-sm active:scale-95 transition-transform"
+              aria-label="Toggle Theme"
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+            {isAdmin && (
+              <Link 
+                href="/admin" 
+                className="p-2.5 rounded-full border border-brand-border bg-brand-card text-brand-accent shadow-sm active:scale-95 transition-transform"
+                title="لوحة الإدارة"
+              >
+                <ShieldCheck size={18} />
+              </Link>
+            )}
+          </div>
+
+          {/* Center Brand Logo */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="inline-block hover:scale-105 transition-transform duration-300">
+              <MaqamLogo className="scale-95 sm:scale-100" />
+            </Link>
+          </div>
+
+          {/* Desktop Right Controls (Tracking) */}
+          <div className="hidden sm:flex items-center gap-3 justify-end">
+            <button 
+              onClick={() => setShowOrderModal(true)} 
+              className={btnClass}
+              title="تتبع الشحنات"
+              aria-label="Track Orders"
+            >
+              <Truck size={20} />
             </button>
           </div>
+
+          {/* Mobile Right Controls (Quick Cart Button with Count) */}
+          <div className="flex sm:hidden items-center justify-end">
+            <button 
+              onClick={() => setShowCart(true)} 
+              className="relative p-2.5 rounded-full border border-brand-border bg-brand-card text-brand-accent shadow-sm active:scale-95 transition-transform"
+              aria-label="Shopping Cart"
+            >
+              <ShoppingBag size={18} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-black shadow-md bg-brand-accent">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </div>
+
         </div>
       </nav>
+
+      {/* ── Mobile Bottom Navigation Dock (High-End Native Experience) ── */}
+      <div className="sm:hidden fixed bottom-3 inset-x-3 z-50 pointer-events-auto">
+        <nav 
+          aria-label="Mobile Navigation"
+          className="bg-brand-card/95 backdrop-blur-2xl border border-brand-border/80 rounded-2xl py-2 px-3 shadow-[0_12px_36px_rgba(0,0,0,0.18)] flex items-center justify-around gap-1"
+        >
+          <Link
+            href="/"
+            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
+              pathname === "/" 
+                ? "text-brand-accent font-black scale-105" 
+                : "text-brand-text/60 hover:text-brand-text font-bold"
+            }`}
+          >
+            <Home size={19} strokeWidth={pathname === "/" ? 2.5 : 2} />
+            <span className="text-[10px] tracking-tight">الرئيسية</span>
+          </Link>
+
+          <Link
+            href="/products"
+            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
+              pathname.startsWith("/products") 
+                ? "text-brand-accent font-black scale-105" 
+                : "text-brand-text/60 hover:text-brand-text font-bold"
+            }`}
+          >
+            <LayoutGrid size={19} strokeWidth={pathname.startsWith("/products") ? 2.5 : 2} />
+            <span className="text-[10px] tracking-tight">المقتنيات</span>
+          </Link>
+
+          <button
+            onClick={() => setShowCart(true)}
+            className="flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl text-brand-text/70 hover:text-brand-accent font-bold transition-all relative"
+          >
+            <div className="relative">
+              <ShoppingBag size={19} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 text-white text-[9px] min-w-4 h-4 px-1 flex items-center justify-center rounded-full font-black shadow-md bg-brand-accent">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+            <span className="text-[10px] tracking-tight">السلة</span>
+          </button>
+
+          <button
+            onClick={() => setShowOrderModal(true)}
+            className="flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl text-brand-text/70 hover:text-brand-accent font-bold transition-all"
+          >
+            <Truck size={19} />
+            <span className="text-[10px] tracking-tight">شحناتي</span>
+          </button>
+
+          <Link
+            href="/profile"
+            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
+              pathname === "/profile" 
+                ? "text-brand-accent font-black scale-105" 
+                : "text-brand-text/60 hover:text-brand-text font-bold"
+            }`}
+          >
+            <User size={19} strokeWidth={pathname === "/profile" ? 2.5 : 2} />
+            <span className="text-[10px] tracking-tight">حسابي</span>
+          </Link>
+        </nav>
+      </div>
 
       <CartSlideOver isOpen={showCart} onClose={() => setShowCart(false)} />
 
       {showOrderModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brand-bg/80 backdrop-blur-md">
-          <div className="p-12 rounded-[3.5rem] max-w-xl w-full relative bg-brand-card border border-brand-border shadow-3xl overflow-hidden">
+          <div className="p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] max-w-xl w-full relative bg-brand-card border border-brand-border shadow-3xl overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-full blur-[60px]" />
-            <button onClick={() => setShowOrderModal(false)} className="absolute top-8 right-8 text-3xl font-black text-brand-text/30 hover:text-brand-text transition-colors">&times;</button>
-            <h2 className="text-4xl font-black mb-10 uppercase italic tracking-tighter text-brand-text leading-none">
+            <button onClick={() => setShowOrderModal(false)} className="absolute top-6 right-6 text-2xl font-black text-brand-text/40 hover:text-brand-text transition-colors">&times;</button>
+            <h2 className="text-3xl sm:text-4xl font-black mb-8 uppercase italic tracking-tighter text-brand-text leading-none">
                تتبع <span className="text-brand-accent">الشحنات</span>
             </h2>
             
             {loadingOrders ? (
-              <div className="flex justify-center py-20"><RefreshCw className="animate-spin text-brand-accent" size={40} /></div>
+              <div className="flex justify-center py-16"><RefreshCw className="animate-spin text-brand-accent" size={36} /></div>
             ) : activeOrders.length === 0 ? (
-              <div className="text-center py-20 border-2 border-dashed border-brand-border rounded-[2.5rem] flex flex-col items-center gap-4">
-                 <SketchyTruck className="w-16 h-16 text-brand-text/10" />
-                 <p className="text-[12px] uppercase tracking-[0.4em] font-black text-brand-text/20">لا توجد شحنات نشطة</p>
+              <div className="text-center py-16 border-2 border-dashed border-brand-border rounded-[2rem] flex flex-col items-center gap-3">
+                 <Truck className="w-12 h-12 text-brand-text/20" />
+                 <p className="text-[11px] uppercase tracking-[0.3em] font-black text-brand-text/30">لا توجد شحنات نشطة</p>
               </div>
             ) : (
-              <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-4 scrollbar-hide">
+              <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-2 scrollbar-hide">
                 {activeOrders.map(order => (
-                  <div key={order.id} className="p-8 rounded-[2.5rem] space-y-4 bg-brand-bg border border-brand-border group hover:border-brand-accent/50 transition-all duration-500">
+                  <div key={order.id} className="p-6 rounded-[2rem] space-y-3 bg-brand-bg border border-brand-border group hover:border-brand-accent/40 transition-all duration-300">
                     <div className="flex justify-between items-end">
                       <div className="flex flex-col gap-1">
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-text/30">رقم الطلب</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-text/40">رقم الطلب</span>
                         <span className="text-sm font-black text-brand-text italic leading-none">#{order.id.slice(0, 8).toUpperCase()}</span>
                       </div>
                       <div className="text-right">
-                         <p className="text-2xl font-black text-brand-accent leading-none italic">{order.total ?? order.total_amount} <span className="text-[10px] uppercase not-italic">ج.م</span></p>
+                         <p className="text-xl sm:text-2xl font-black text-brand-accent leading-none italic">{order.total ?? order.total_amount} <span className="text-[10px] uppercase not-italic">ج.م</span></p>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center pt-4 border-t border-brand-border/50">
-                      <span className="text-[10px] font-black text-brand-text/20 uppercase tracking-widest">{new Date(order.created_at).toLocaleDateString("ar-EG", { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                      <span className="px-4 py-2 rounded-full bg-brand-accent/10 text-brand-accent text-[9px] font-black uppercase tracking-[0.2em] border border-brand-accent/20">{order.status}</span>
+                    <div className="flex justify-between items-center pt-3 border-t border-brand-border/40">
+                      <span className="text-[10px] font-black text-brand-text/30 uppercase tracking-widest">{new Date(order.created_at).toLocaleDateString("ar-EG", { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      <span className="px-3 py-1 rounded-full bg-brand-accent/10 text-brand-accent text-[9px] font-black uppercase tracking-[0.2em] border border-brand-accent/20">{order.status}</span>
                     </div>
                   </div>
                 ))}

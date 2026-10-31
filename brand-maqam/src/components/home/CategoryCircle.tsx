@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { CircleDashed } from "lucide-react";
+import { Sparkles, Layers } from "lucide-react";
 import { createClient } from "@/lib/supabaseBrowser";
 import Link from "next/link";
 
@@ -35,41 +35,56 @@ export default function CategoryCircle() {
 
   return (
     <section
-      className="relative w-full py-10 sm:py-16 overflow-hidden bg-brand-card border-y border-brand-border"
+      className="relative w-full py-6 sm:py-10 overflow-hidden bg-brand-card/60 backdrop-blur-md border-y border-brand-border"
       style={{
-        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+        boxShadow: "0 2px 16px rgba(0,0,0,0.03)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6">
         <div
-          className="flex justify-start sm:justify-center gap-4 sm:gap-10 md:gap-16 overflow-x-auto pb-4 scrollbar-hide snap-x"
+          className="flex items-center justify-start sm:justify-center gap-4 sm:gap-8 overflow-x-auto pb-2 px-3 scrollbar-hide mobile-snap-slider select-none"
           dir="rtl"
         >
+          {/* Quick "All Collections" Circle */}
+          <Link
+            href="/products"
+            className="flex flex-col items-center gap-2.5 shrink-0 group cursor-pointer"
+          >
+            <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-brand-accent/40 via-brand-border to-brand-accent group-hover:from-brand-accent group-hover:to-brand-text/60 transition-all duration-300">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-brand-bg flex items-center justify-center border border-brand-border/60 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+                <Sparkles size={24} className="text-brand-accent group-hover:scale-110 transition-transform" />
+              </div>
+            </div>
+            <span className="text-[11px] sm:text-xs font-black tracking-tight text-center text-brand-text group-hover:text-brand-accent transition-colors">
+              الكل
+            </span>
+          </Link>
+
+          {/* Dynamic Circular Categories */}
           {categories.map((cat) => (
             <Link
               href={`/products?category=${cat.id}`}
               key={cat.id}
-              className="flex flex-col items-center gap-4 snap-start cursor-pointer group"
+              className="flex flex-col items-center gap-2.5 shrink-0 group cursor-pointer"
             >
-              <div className="relative w-16 h-16 sm:w-24 sm:h-24 aspect-square rounded-full overflow-hidden transition-all duration-500 border-2 border-brand-border bg-brand-bg shadow-sm hover:border-brand-accent hover:shadow-[0_0_20px_var(--brand-accent)] hover:scale-110">
-                {cat.image_url ? (
-                  <Image 
-                    src={cat.image_url} 
-                    alt={cat.name} 
-                    fill 
-                    className="object-cover rounded-full" 
-                    sizes="(max-width: 640px) 64px, 112px"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <CircleDashed size={28} className="text-brand-accent animate-spin-slow" />
-                  </div>
-                )}
+              <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-brand-accent/40 via-brand-border to-brand-accent group-hover:from-brand-accent group-hover:to-brand-text/60 transition-all duration-300">
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 aspect-square rounded-full overflow-hidden bg-brand-bg border border-brand-border/60 group-hover:scale-105 transition-transform duration-300 shadow-sm flex items-center justify-center">
+                  {cat.image_url ? (
+                    <Image 
+                      src={cat.image_url} 
+                      alt={cat.name} 
+                      fill 
+                      className="object-cover rounded-full group-hover:scale-110 transition-transform duration-500" 
+                      sizes="(max-width: 640px) 64px, 80px"
+                    />
+                  ) : (
+                    <span className="text-xs font-black uppercase text-brand-accent">
+                      {cat.name.slice(0, 2)}
+                    </span>
+                  )}
+                </div>
               </div>
-              {/* Text placed OUTSIDE the circle, below it */}
-              <span
-                className="text-[10px] sm:text-sm font-black uppercase tracking-widest text-center max-w-[70px] sm:max-w-none leading-tight transition-colors duration-300 text-brand-text group-hover:text-brand-accent"
-              >
+              <span className="text-[11px] sm:text-xs font-black tracking-tight text-center max-w-[76px] sm:max-w-none leading-tight text-brand-text group-hover:text-brand-accent transition-colors line-clamp-1">
                 {cat.name}
               </span>
             </Link>

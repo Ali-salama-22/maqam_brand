@@ -2,10 +2,37 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabaseBrowser";
-import { PlusCircle, Image as ImageIcon, Trash2, Check, RefreshCw, AlertTriangle, X } from "lucide-react";
+import { 
+  PlusCircle, 
+  Image as ImageIcon, 
+  Trash2, 
+  Check, 
+  RefreshCw, 
+  AlertTriangle, 
+  X,
+  Sparkles,
+  Flame,
+  Layers,
+  ChevronDown
+} from "lucide-react";
 
-type Category = { id: string; name: string };
-type Product = { id: string; name: string; price: number; image_url: string };
+type Category = { 
+  id: string; 
+  name: string; 
+  display_type?: string; 
+};
+
+type Product = { 
+  id: string; 
+  name: string; 
+  price: number; 
+  image_url: string;
+  category_id?: string;
+  is_new_collection?: boolean;
+  is_offer?: boolean;
+  is_neon_offer?: boolean;
+  stock_count?: number;
+};
 
 /* ── Inline Confirmation Modal ── */
 function ConfirmModal({
@@ -100,11 +127,45 @@ export default function ProductManager() {
   }, []);
 
   const fetchData = async () => {
-    const { data: cData } = await supabase.from("categories").select("id, name");
+    const { data: cData } = await supabase
+      .from("categories")
+      .select("id, name, display_type");
     if (cData) setCategories(cData);
     
-    const { data: pData } = await supabase.from("products").select("id, name, price, image_url").order("created_at", { ascending: false });
+    const { data: pData } = await supabase
+      .from("products")
+      .select("id, name, price, image_url, category_id, is_new_collection, is_offer, is_neon_offer, stock_count")
+      .order("created_at", { ascending: false });
     if (pData) setProducts(pData);
+  };
+
+  const handleUpdateProductCategory = async (productId: string, newCategoryId: string) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, category_id: newCategoryId } : p));
+    const { error } = await supabase.from("products").update({ category_id: newCategoryId }).eq("id", productId);
+    if (error) {
+      alert("خطأ أثناء تغيير قسم المنتج: " + error.message);
+      fetchData();
+    }
+  };
+
+  const handleToggleNewCollection = async (productId: string, currentStatus?: boolean) => {
+    const nextStatus = !currentStatus;
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, is_new_collection: nextStatus } : p));
+    const { error } = await supabase.from("products").update({ is_new_collection: nextStatus }).eq("id", productId);
+    if (error) {
+      alert("خطأ أثناء تحديث حالة الكولكشن: " + error.message);
+      fetchData();
+    }
+  };
+
+  const handleToggleOffer = async (productId: string, currentStatus?: boolean) => {
+    const nextStatus = !currentStatus;
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, is_offer: nextStatus, is_neon_offer: nextStatus } : p));
+    const { error } = await supabase.from("products").update({ is_offer: nextStatus, is_neon_offer: nextStatus }).eq("id", productId);
+    if (error) {
+      alert("خطأ أثناء تحديث حالة العرض: " + error.message);
+      fetchData();
+    }
   };
 
   const handleAddSize = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -502,27 +563,99 @@ export default function ProductManager() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {products.map(p => (
-            <div key={p.id} className="bg-brand-card border-2 border-brand-border p-6 rounded-[2.5rem] flex flex-col gap-5 shadow-sm hover:border-brand-accent/40 transition-all group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-full blur-3xl -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
-              
-              <div className="flex items-center gap-5 relative z-10">
-                <div className="w-20 h-20 bg-brand-bg rounded-3xl overflow-hidden bg-center bg-cover border-2 border-brand-border group-hover:scale-110 transition-all duration-700 shadow-inner" style={{ backgroundImage: `url(${p.image_url})` }} />
-                <div className="flex flex-col flex-1 truncate">
-                  <p className="font-black text-brand-text truncate text-xl mb-1 uppercase italic tracking-tighter">{p.name}</p>
-                  <p className="font-black text-brand-accent text-sm tracking-widest">{p.price} ج.م</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+          {products.map(p => {
+            const currentCategory = categories.find(c => c.id === p.category_id);
+            const isCircularCat = currentCategory?.display_type === "circular";
+
+            return (
+              <div key={p.id} className="bg-brand-card border-2 border-brand-border p-5 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col justify-between gap-4 shadow-sm hover:border-brand-accent/40 transition-all group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-full blur-3xl -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                {/* Top: Product Info & Image & Delete */}
+                <div className="flex items-center gap-4 relative z-10">
+                  <div 
+                    className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-bg rounded-2xl overflow-hidden bg-center bg-cover border-2 border-brand-border shrink-0 shadow-inner group-hover:scale-105 transition-transform" 
+                    style={{ backgroundImage: `url(${p.image_url})` }} 
+                  />
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <p className="font-black text-brand-text truncate text-base sm:text-lg mb-0.5 uppercase italic tracking-tight">{p.name}</p>
+                    <p className="font-black text-brand-accent text-sm tracking-wider">{p.price} ج.م</p>
+                  </div>
+                  <button
+                    onClick={() => requestDeleteProduct(p.id)}
+                    type="button"
+                    className="text-brand-text/20 hover:text-red-500 p-2.5 rounded-xl hover:bg-red-500/10 transition-all shrink-0"
+                    title="حذف المنتج"
+                  >
+                    <Trash2 size={20} />
+                  </button>
                 </div>
-                <button
-                  onClick={() => requestDeleteProduct(p.id)}
-                  type="button"
-                  className="text-brand-text/10 hover:text-red-500 p-3 rounded-2xl hover:bg-red-500/10 transition-all"
-                >
-                  <Trash2 size={24} />
-                </button>
+
+                {/* Middle: Display Location & Category Switcher */}
+                <div className="pt-3 border-t border-brand-border/60 flex flex-col gap-2 relative z-10 text-xs">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-bold text-brand-text/50 uppercase tracking-wider flex items-center gap-1">
+                      <Layers size={13} className="text-brand-accent" /> موقع العرض (القسم):
+                    </span>
+                    {currentCategory && (
+                      <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
+                        isCircularCat
+                          ? "bg-brand-accent/15 border-brand-accent text-brand-text"
+                          : "bg-brand-bg border-brand-border text-brand-text/70"
+                      }`}>
+                        {isCircularCat ? "⚪ دائري" : "🔲 مستطيل"}
+                      </span>
+                    )}
+                  </div>
+
+                  <select
+                    value={p.category_id || ""}
+                    onChange={(e) => handleUpdateProductCategory(p.id, e.target.value)}
+                    className="w-full bg-brand-bg border border-brand-border rounded-xl py-2 px-3 text-xs font-bold text-brand-text outline-none focus:border-brand-accent transition-colors"
+                  >
+                    <option value="">اختر القسم لتحديد موضع العرض...</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({c.display_type === "circular" ? "أيقونة دائرية ⚪" : "معرض مستطيل 🔲"})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Bottom: Fast Toggles for Home Sections */}
+                <div className="pt-2 border-t border-brand-border/40 grid grid-cols-2 gap-2 relative z-10">
+                  <button
+                    type="button"
+                    onClick={() => handleToggleNewCollection(p.id, p.is_new_collection)}
+                    className={`py-2 px-2 rounded-xl text-[10px] font-black border transition-all flex items-center justify-center gap-1 active:scale-95 ${
+                      p.is_new_collection
+                        ? "bg-brand-accent/20 border-brand-accent text-brand-text shadow-sm"
+                        : "bg-brand-bg/60 border-brand-border text-brand-text/40 hover:text-brand-text"
+                    }`}
+                    title="عرض هذا المنتج في شريط الكولكشن الجديد المستطيل على الصفحة الرئيسية"
+                  >
+                    <Sparkles size={12} className={p.is_new_collection ? "text-brand-accent" : "opacity-40"} />
+                    {p.is_new_collection ? "الكولكشن الجديد ✓" : "الكولكشن الجديد"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleToggleOffer(p.id, p.is_offer || p.is_neon_offer)}
+                    className={`py-2 px-2 rounded-xl text-[10px] font-black border transition-all flex items-center justify-center gap-1 active:scale-95 ${
+                      p.is_offer || p.is_neon_offer
+                        ? "bg-red-500/15 border-red-500/40 text-red-500 shadow-sm"
+                        : "bg-brand-bg/60 border-brand-border text-brand-text/40 hover:text-brand-text"
+                    }`}
+                    title="عرض هذا المنتج في قسم العروض الخاصة"
+                  >
+                    <Flame size={12} className={p.is_offer || p.is_neon_offer ? "text-red-500" : "opacity-40"} />
+                    {p.is_offer || p.is_neon_offer ? "عرض خاص ✓" : "عرض خاص"}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       </div>
