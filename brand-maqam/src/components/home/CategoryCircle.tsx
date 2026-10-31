@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Sparkles, Layers } from "lucide-react";
 import { createClient } from "@/lib/supabaseBrowser";
 import Link from "next/link";
 
@@ -35,6 +34,7 @@ export default function CategoryCircle() {
 
   return (
     <section
+      id="categories"
       className="relative w-full py-6 sm:py-10 overflow-hidden bg-brand-card/60 backdrop-blur-md border-y border-brand-border"
       style={{
         boxShadow: "0 2px 16px rgba(0,0,0,0.03)",
@@ -45,21 +45,6 @@ export default function CategoryCircle() {
           className="flex items-center justify-start sm:justify-center gap-4 sm:gap-8 overflow-x-auto pb-2 px-3 scrollbar-hide mobile-snap-slider select-none"
           dir="rtl"
         >
-          {/* Quick "All Collections" Circle */}
-          <Link
-            href="/products"
-            className="flex flex-col items-center gap-2.5 shrink-0 group cursor-pointer"
-          >
-            <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-brand-accent/40 via-brand-border to-brand-accent group-hover:from-brand-accent group-hover:to-brand-text/60 transition-all duration-300">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-brand-bg flex items-center justify-center border border-brand-border/60 group-hover:scale-105 transition-transform duration-300 shadow-sm">
-                <Sparkles size={24} className="text-brand-accent group-hover:scale-110 transition-transform" />
-              </div>
-            </div>
-            <span className="text-[11px] sm:text-xs font-black tracking-tight text-center text-brand-text group-hover:text-brand-accent transition-colors">
-              الكل
-            </span>
-          </Link>
-
           {/* Dynamic Circular Categories */}
           {categories.map((cat) => (
             <Link

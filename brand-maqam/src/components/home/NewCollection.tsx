@@ -38,7 +38,6 @@ export default function NewCollection() {
             </h2>
             <div className="h-[4px] w-28 sm:w-40 mt-3 sm:mt-4 rounded-full mx-auto md:mx-0 bg-brand-accent/20" />
           </div>
-          <Link href="/products" className="text-sm font-black uppercase tracking-[0.3em] text-brand-accent underline">عرض الكل</Link>
         </div>
 
         <div ref={scrollRef} className="flex gap-4 sm:gap-8 overflow-x-auto pb-6 sm:pb-10 scrollbar-hide mobile-snap-slider px-2 sm:px-4" dir="rtl">

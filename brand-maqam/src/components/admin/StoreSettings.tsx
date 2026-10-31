@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { createClient } from "@/lib/supabaseBrowser";
 import {
   Settings, Save, RefreshCw, Trophy, Image as ImageIcon,
-  Video, Link as LinkIcon, Upload, X, ToggleLeft, ToggleRight, Tv2
+  Video, Link as LinkIcon, Upload, X, Tv2,
+  Headphones, PhoneCall, MessageSquare
 } from "lucide-react";
 
 export default function StoreSettings() {
@@ -29,6 +30,10 @@ export default function StoreSettings() {
   const [bannerTitle, setBannerTitle] = useState("");
   const [bannerSubtitle, setBannerSubtitle] = useState("");
 
+  // Contact / WhatsApp Numbers
+  const [customerServicePhone, setCustomerServicePhone] = useState("201032904142");
+  const [orderWhatsAppPhone, setOrderWhatsAppPhone] = useState("201032904142");
+
   const fetchSettings = useCallback(async () => {
     setFetching(true);
     const { data } = await supabase.from("store_settings").select("*").eq("id", 1).single();
@@ -45,6 +50,8 @@ export default function StoreSettings() {
         if (parsed.bannerMediaUrl) setBannerMediaUrl(parsed.bannerMediaUrl);
         if (parsed.bannerTitle) setBannerTitle(parsed.bannerTitle);
         if (parsed.bannerSubtitle) setBannerSubtitle(parsed.bannerSubtitle);
+        if (parsed.customerServicePhone) setCustomerServicePhone(parsed.customerServicePhone);
+        if (parsed.orderWhatsAppPhone) setOrderWhatsAppPhone(parsed.orderWhatsAppPhone);
       } catch {
         // plain text fallback
       }
@@ -69,6 +76,8 @@ export default function StoreSettings() {
       bannerMediaUrl,
       bannerTitle,
       bannerSubtitle,
+      customerServicePhone: customerServicePhone.trim() || "201032904142",
+      orderWhatsAppPhone: orderWhatsAppPhone.trim() || "201032904142",
     });
 
     const { error } = await supabase.from("store_settings").update({
@@ -114,6 +123,65 @@ export default function StoreSettings() {
 
   return (
     <div className="max-w-5xl space-y-12 pb-20">
+
+      {/* ── Card: WhatsApp & Customer Support Numbers ─────────────────── */}
+      <div className="bg-brand-card p-8 sm:p-10 rounded-[2.5rem] sm:rounded-[3rem] border border-brand-border relative overflow-hidden shadow-sm">
+        <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+
+        <h3 className="text-2xl sm:text-3xl font-black text-brand-text mb-8 flex items-center gap-3 italic uppercase tracking-tight leading-none relative z-10">
+          <Headphones size={32} className="text-emerald-500" /> أرقام خدمة العملاء والواتساب
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+          {/* Customer Service Phone */}
+          <div className="space-y-3 bg-brand-bg/50 p-6 rounded-2xl border border-brand-border">
+            <div className="flex items-center gap-2">
+              <PhoneCall size={18} className="text-emerald-500" />
+              <label className="block text-xs font-black text-brand-text uppercase tracking-wider">
+                رقم خدمة العملاء (واتساب)
+              </label>
+            </div>
+            <p className="text-[11px] text-brand-text/50 font-bold leading-relaxed">
+              الرقم الذي يفتح عند ضغط العميل على زر &quot;خدمة العملاء&quot; بجانب اسم مقام في أعلى الموقع.
+            </p>
+            <input
+              value={customerServicePhone}
+              onChange={e => setCustomerServicePhone(e.target.value.trim())}
+              type="text"
+              placeholder="مثال: 201032904142"
+              className="w-full bg-brand-card border-2 border-brand-border rounded-xl p-4 text-brand-text font-black text-base focus:border-emerald-500 outline-none transition-all"
+              dir="ltr"
+            />
+            <p className="text-[10px] text-brand-text/40 font-mono">
+              اكتب الرقم مع كود الدولة بدون مسافات أو علامة + (مثال: 201032904142)
+            </p>
+          </div>
+
+          {/* Order Checkout WhatsApp Phone */}
+          <div className="space-y-3 bg-brand-bg/50 p-6 rounded-2xl border border-brand-border">
+            <div className="flex items-center gap-2">
+              <MessageSquare size={18} className="text-brand-accent" />
+              <label className="block text-xs font-black text-brand-text uppercase tracking-wider">
+                رقم إتمام واستقبال الطلبات (واتساب)
+              </label>
+            </div>
+            <p className="text-[11px] text-brand-text/50 font-bold leading-relaxed">
+              الرقم الذي يتم تحويل العميل إليه تلقائياً بتفاصيل الفاتورة عند الضغط على &quot;تأكيد الطلب&quot; في السلة.
+            </p>
+            <input
+              value={orderWhatsAppPhone}
+              onChange={e => setOrderWhatsAppPhone(e.target.value.trim())}
+              type="text"
+              placeholder="مثال: 201032904142"
+              className="w-full bg-brand-card border-2 border-brand-border rounded-xl p-4 text-brand-text font-black text-base focus:border-brand-accent outline-none transition-all"
+              dir="ltr"
+            />
+            <p className="text-[10px] text-brand-text/40 font-mono">
+              اكتب الرقم مع كود الدولة بدون مسافات أو علامة + (مثال: 201032904142)
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* ── Card: Footer & General ──────────────────────────────────────── */}
       <div className="bg-brand-card p-10 rounded-[3rem] border border-brand-border relative overflow-hidden">

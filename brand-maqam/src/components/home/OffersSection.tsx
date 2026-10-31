@@ -123,10 +123,10 @@ export default function OffersSection() {
                   </p>
                 )}
                 <Link
-                  href="/products"
-                  className="inline-flex items-center gap-2 sm:gap-3 bg-white text-brand-text px-5 sm:px-8 py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest hover:bg-brand-accent hover:text-brand-text transition-all shadow-2xl hover:scale-105 active:scale-95"
+                  href="#categories"
+                  className="inline-flex items-center gap-2 sm:gap-3 bg-white text-brand-text px-5 sm:px-8 py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-brand-accent hover:text-brand-text transition-all shadow-2xl hover:scale-105 active:scale-95"
                 >
-                  تسوق الآن <ArrowLeft size={14} />
+                  استكشف الأقسام <ArrowLeft size={14} />
                 </Link>
               </div>
             </div>

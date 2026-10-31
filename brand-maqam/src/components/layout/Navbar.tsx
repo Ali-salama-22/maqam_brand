@@ -13,8 +13,8 @@ import {
   Sun, 
   Moon,
   Home,
-  LayoutGrid,
-  ShieldCheck
+  ShieldCheck,
+  Headphones
 } from "lucide-react";
 import CartSlideOver from "@/components/layout/CartSlideOver";
 import { useCart } from "@/lib/CartContext";
@@ -46,6 +46,7 @@ export default function Navbar() {
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [customerServicePhone, setCustomerServicePhone] = useState("201032904142");
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { theme, toggleTheme } = useTheme();
@@ -76,6 +77,17 @@ export default function Navbar() {
     return () => {
       listener.subscription.unsubscribe();
     };
+  }, [supabase]);
+
+  useEffect(() => {
+    supabase.from("store_settings").select("banner_text").eq("id", 1).single().then(({ data }) => {
+      if (data?.banner_text) {
+        try {
+          const parsed = JSON.parse(data.banner_text);
+          if (parsed.customerServicePhone) setCustomerServicePhone(parsed.customerServicePhone);
+        } catch {}
+      }
+    });
   }, [supabase]);
 
   useEffect(() => {
@@ -176,11 +188,23 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Center Brand Logo */}
-          <div className="flex-shrink-0">
+          {/* Center: Brand Logo + Customer Service Pill */}
+          <div className="flex items-center gap-2 sm:gap-3.5">
             <Link href="/" className="inline-block hover:scale-105 transition-transform duration-300">
-              <MaqamLogo className="scale-95 sm:scale-100" />
+              <MaqamLogo className="scale-90 sm:scale-100" />
             </Link>
+
+            {/* Customer Service WhatsApp Button */}
+            <a
+              href={`https://wa.me/${customerServicePhone}?text=${encodeURIComponent("مرحباً، أود الاستفسار من خدمة عملاء مقام 🌟")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[10px] sm:text-xs font-black shadow-sm hover:bg-emerald-500/20 active:scale-95 transition-all"
+              title="تواصل مع خدمة العملاء على واتساب"
+            >
+              <Headphones size={13} className="text-emerald-500 animate-pulse" />
+              <span className="whitespace-nowrap">خدمة العملاء</span>
+            </a>
           </div>
 
           {/* Desktop Right Controls (Tracking) */}
@@ -232,17 +256,15 @@ export default function Navbar() {
             <span className="text-[10px] tracking-tight">الرئيسية</span>
           </Link>
 
-          <Link
-            href="/products"
-            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-200 ${
-              pathname.startsWith("/products") 
-                ? "text-brand-accent font-black scale-105" 
-                : "text-brand-text/60 hover:text-brand-text font-bold"
-            }`}
+          <a
+            href={`https://wa.me/${customerServicePhone}?text=${encodeURIComponent("مرحباً، أود الاستفسار من خدمة عملاء مقام 🌟")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl text-emerald-500 font-bold transition-all hover:scale-105 active:scale-95"
           >
-            <LayoutGrid size={19} strokeWidth={pathname.startsWith("/products") ? 2.5 : 2} />
-            <span className="text-[10px] tracking-tight">المقتنيات</span>
-          </Link>
+            <Headphones size={19} />
+            <span className="text-[10px] tracking-tight">الدعم</span>
+          </a>
 
           <button
             onClick={() => setShowCart(true)}

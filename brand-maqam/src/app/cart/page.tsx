@@ -125,6 +125,7 @@ export default function CartPage() {
   const [isGuest, setIsGuest] = useState(false);
   const [loading, setLoading] = useState(false);
   const [orderResult, setOrderResult] = useState<OrderResult | null>(null);
+  const [orderWaNumber, setOrderWaNumber] = useState("201032904142");
   const { items, removeFromCart, updateQty, total, clearCart } = useCart();
   const supabase = createClient();
 
@@ -147,6 +148,15 @@ export default function CartPage() {
             address: pData.address || ""
           });
         }
+      }
+    });
+
+    supabase.from("store_settings").select("banner_text").eq("id", 1).single().then(({ data }) => {
+      if (data?.banner_text) {
+        try {
+          const parsed = JSON.parse(data.banner_text);
+          if (parsed.orderWhatsAppPhone) setOrderWaNumber(parsed.orderWhatsAppPhone);
+        } catch {}
       }
     });
   }, []);
@@ -226,7 +236,7 @@ ${itemLines}
       clearCart();
 
       // WhatsApp redirect (direct navigation to avoid mobile pop-up blockers)
-      const waNumber = "201032904142";
+      const waNumber = orderWaNumber || "201032904142";
       const message = buildWhatsAppMessage(orderId, updatedData);
       window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
     } catch (err: any) {
