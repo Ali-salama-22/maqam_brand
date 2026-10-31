@@ -46,7 +46,9 @@ export default function Navbar() {
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showBottomBar, setShowBottomBar] = useState(true);
   const [customerServicePhone, setCustomerServicePhone] = useState("201032904142");
+  const bottomNavRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { theme, toggleTheme } = useTheme();
@@ -59,6 +61,35 @@ export default function Navbar() {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* ── Auto-hide Bottom Dock on Tap, Show on Movement/Scroll ── */
+  useEffect(() => {
+    setShowBottomBar(true);
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleTap = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (bottomNavRef.current && target && bottomNavRef.current.contains(target)) {
+        return; // Click was inside the bottom dock, don't hide
+      }
+      setShowBottomBar(false);
+    };
+
+    const handleMovement = () => {
+      setShowBottomBar(true);
+    };
+
+    window.addEventListener("click", handleTap);
+    window.addEventListener("scroll", handleMovement, { passive: true });
+    window.addEventListener("touchmove", handleMovement, { passive: true });
+
+    return () => {
+      window.removeEventListener("click", handleTap);
+      window.removeEventListener("scroll", handleMovement);
+      window.removeEventListener("touchmove", handleMovement);
+    };
   }, []);
 
   useEffect(() => {
@@ -219,27 +250,21 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Right Controls (Quick Cart Button with Count) */}
-          <div className="flex sm:hidden items-center justify-end">
-            <button 
-              onClick={() => setShowCart(true)} 
-              className="relative p-2.5 rounded-full border border-brand-border bg-brand-card text-brand-accent shadow-sm active:scale-95 transition-transform"
-              aria-label="Shopping Cart"
-            >
-              <ShoppingBag size={18} />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-black shadow-md bg-brand-accent">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </div>
+          {/* Mobile Right Spacer (Balances header without top cart icon) */}
+          <div className="flex sm:hidden items-center justify-end w-9" />
 
         </div>
       </nav>
 
-      {/* ── Mobile Bottom Navigation Dock (High-End Native Experience) ── */}
-      <div className="sm:hidden fixed bottom-3 inset-x-3 z-50 pointer-events-auto">
+      {/* ── Mobile Bottom Navigation Dock (High-End Native Experience with Auto-Hide) ── */}
+      <div 
+        ref={bottomNavRef}
+        className={`sm:hidden fixed bottom-3 inset-x-3 z-50 pointer-events-auto transition-all duration-300 ease-out transform ${
+          showBottomBar 
+            ? "translate-y-0 opacity-100" 
+            : "translate-y-24 opacity-0 pointer-events-none"
+        }`}
+      >
         <nav 
           aria-label="Mobile Navigation"
           className="bg-brand-card/95 backdrop-blur-2xl border border-brand-border/80 rounded-2xl py-2 px-3 shadow-[0_12px_36px_rgba(0,0,0,0.18)] flex items-center justify-around gap-1"
